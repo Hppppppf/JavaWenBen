@@ -1,5 +1,8 @@
-
-import javax.swing.JOptionPane;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import javax.swing.text.*;
+ 
 
 
 /*
@@ -13,14 +16,38 @@ import javax.swing.JOptionPane;
  * @author HPF
  */
 public class SearchFrame extends javax.swing.JFrame {
-
     /**
      * Creates new form Search
      */
+    Highlighter highLighter = MainFrame.MainTextPane.getHighlighter();
+    String text = MainFrame.MainTextPane.getText();
+    DefaultHighlighter.DefaultHighlightPainter p = new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
+    
     public SearchFrame() {
         initComponents();
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);     
     }
-
+    private void HighLight (JTextField jText)
+    {
+        String keyWord = jText.getText();
+        int pos = 0;
+        while ((pos = text.indexOf(keyWord, pos)) >= 0)
+        {
+            try 
+            {
+                highLighter.addHighlight(pos, pos + keyWord.length(), p);
+                pos += keyWord.length();
+            }
+            catch (BadLocationException e) 
+            {
+                e.printStackTrace();
+            }
+        }
+    }
+    private void unHighLight()
+    {
+        highLighter.removeAllHighlights();
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -33,9 +60,7 @@ public class SearchFrame extends javax.swing.JFrame {
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         SearchText1 = new javax.swing.JTextField();
-        SearchNextButton1 = new javax.swing.JButton();
         CancelButton1 = new javax.swing.JButton();
-        HighlightButton = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         SearchText2 = new javax.swing.JTextField();
@@ -44,7 +69,6 @@ public class SearchFrame extends javax.swing.JFrame {
         ReplaceText = new javax.swing.JTextField();
         ReplaceButton = new javax.swing.JButton();
         ReplaceAllButton = new javax.swing.JButton();
-        SearchNextButton2 = new javax.swing.JButton();
         CancelButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -56,16 +80,12 @@ public class SearchFrame extends javax.swing.JFrame {
             }
         });
 
-        SearchNextButton1.setText("查找下一处");
-
         CancelButton1.setText("取消");
         CancelButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 CancelButton1ActionPerformed(evt);
             }
         });
-
-        HighlightButton.setText("高亮显示");
 
         jLabel1.setText("查找内容：");
 
@@ -75,14 +95,11 @@ public class SearchFrame extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(SearchNextButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(HighlightButton, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 142, Short.MAX_VALUE)
+                        .addGap(0, 242, Short.MAX_VALUE)
                         .addComponent(CancelButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(SearchText1))
                 .addContainerGap())
@@ -95,11 +112,7 @@ public class SearchFrame extends javax.swing.JFrame {
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(SearchText1, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(77, 77, 77)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(SearchNextButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(HighlightButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(CancelButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(CancelButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -130,8 +143,6 @@ public class SearchFrame extends javax.swing.JFrame {
             }
         });
 
-        SearchNextButton2.setText("查找下一处");
-
         CancelButton2.setText("取消");
         CancelButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -150,9 +161,7 @@ public class SearchFrame extends javax.swing.JFrame {
                         .addComponent(ReplaceButton, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(ReplaceAllButton, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(SearchNextButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addGap(136, 136, 136)
                         .addComponent(CancelButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -179,7 +188,6 @@ public class SearchFrame extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(ReplaceButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(ReplaceAllButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(SearchNextButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(CancelButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
@@ -207,50 +215,33 @@ public class SearchFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void ReplaceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ReplaceButtonActionPerformed
-        // TODO add your handling code here:
+        HighLight(SearchText2);
+        MainFrame.MainTextPane.setText(MainFrame.MainTextPane.getText().replaceFirst(SearchText2.getText(), ReplaceText.getText()));        // TODO add your handling code here:
     }//GEN-LAST:event_ReplaceButtonActionPerformed
 
     private void ReplaceAllButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ReplaceAllButtonActionPerformed
-        // TODO add your handling code here:
+        HighLight(SearchText2);
+        MainFrame.MainTextPane.setText(MainFrame.MainTextPane.getText().replaceAll(SearchText2.getText(), ReplaceText.getText()));// TODO add your handling code here:
     }//GEN-LAST:event_ReplaceAllButtonActionPerformed
 
     private void CancelButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CancelButton2ActionPerformed
-        // TODO add your handling code here:
+        unHighLight();
+        SearchText2.setText("");
+        ReplaceText.setText("");        // TODO add your handling code here:
     }//GEN-LAST:event_CancelButton2ActionPerformed
 
     private void SearchText1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SearchText1ActionPerformed
-    String str1 = SearchText1.getText();
-    String oTEXT = MainFrame.MainTextPane.getText();
-    // 从头开始查找是否存在指定的字符 
-    int r = oTEXT.indexOf(str1); 
-    int Searchlength = str1.length();
-    String ret  = highLighterinsert(str1,r,Searchlength);
-    MainFrame.MainTextPane.setText(ret);
-    //Object[] options = { "OK", "CANCEL" }; int n = JOptionPane.showOptionDialog(this, r," Warning",JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE,null, options, options[0]);
-//TODO
-//查找下一个、高亮、替换
+        HighLight(SearchText1);
     }//GEN-LAST:event_SearchText1ActionPerformed
-    public String insertStringInParticularPosition(String src, String dec, int position){
-        StringBuffer stringBuffer = new StringBuffer(src);
-        return stringBuffer.insert(position, dec).toString();
-    }
-    public String highLighterinsert(String str,int start,int len) {
-		String buffer = str;
-		String startHtml="<span style='color: red;'>";
-                int lenStart = startHtml.length();
-		String endHtml="</span>";
-                insertStringInParticularPosition(str,startHtml,start);
-                insertStringInParticularPosition(str,endHtml,start+lenStart+len);
-                MainFrame.MainTextPane.repaint();
-                System.out.println(str);
-                return str;		
-    }
+    
+    
     private void SearchText2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SearchText2ActionPerformed
-        // TODO add your handling code here:
+        HighLight(SearchText2);// TODO add your handling code here:
     }//GEN-LAST:event_SearchText2ActionPerformed
 
     private void CancelButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CancelButton1ActionPerformed
-        setVisible(false);        // TODO add your handling code here:
+        unHighLight();
+        SearchText1.setText("");// TODO add your handling code here:
     }//GEN-LAST:event_CancelButton1ActionPerformed
 
     /**
@@ -292,12 +283,9 @@ public class SearchFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton CancelButton1;
     private javax.swing.JButton CancelButton2;
-    private javax.swing.JButton HighlightButton;
     private javax.swing.JButton ReplaceAllButton;
     private javax.swing.JButton ReplaceButton;
     private javax.swing.JTextField ReplaceText;
-    private javax.swing.JButton SearchNextButton1;
-    private javax.swing.JButton SearchNextButton2;
     private javax.swing.JTextField SearchText1;
     private javax.swing.JTextField SearchText2;
     private javax.swing.JLabel jLabel1;
